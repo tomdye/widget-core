@@ -23,7 +23,9 @@ For more background on Widgets for Dojo 2, there is a document describing the [w
 
 ## Usage
 
-To use dojo-widgets in a project install the package along with the required peer dependencies.
+We recommend using the [dojo cli](https://github.com/dojo/cli-create-app) to create a complete Dojo 2 skeleton application. This is the quickest way to get started with Dojo 2 and Widgets.
+
+Alternatively if you wish to set up dojo-widgets yourself, install the package along with the required peer dependencies.
 
 ```shell
 npm install dojo-widgets
@@ -36,30 +38,28 @@ npm install dojo-compose
 npm install dojo-store
 ```
 
-and then import the required modules into the project such as, for more details see [features](#features) below.
+Then import the required modules into your project as you need them.
 
 ```ts
 import createButton from 'dojo-widgets/components/createButton';
 ```
-
-Alternatively use the [dojo cli](https://github.com/dojo/cli-create-app) to create a complete Dojo 2 skeleton application.
+For more details see [features](#features) below.
 
 ## Features
 
-Dojo 2 Widgets are based on a virtual DOM implementation named [Maquette](http://maquettejs.org/) as well as some foundational classes
-provided in [dojo-compose](https://github.com/dojo/compose).
+Dojo 2 Widgets are based on a virtual DOM implementation named [Maquette](http://maquettejs.org/) as well as some foundational classes provided in [dojo-compose](https://github.com/dojo/compose).
 
 The examples below are provided in TypeScript syntax. The package does work under JavaScript, but for clarity, the examples will only include one syntax.
 
 ### Base Widget
 
-A class `createWidgetBase` provides all the base Dojo 2 widget functionality, caching and widget lifecycle management, that can be used directly or extended to create custom widgets.
+The class `createWidgetBase` provides all base Dojo 2 widget functionality including caching and widget lifecycle management. It can be used directly or extended to create custom widgets.
 
 ```ts
 const myBasicWidget = createWidgetBase();
 ```
 
-Create the following DOM element:
+Creates the following DOM element:
 
 ```html
 <div></div>
@@ -79,7 +79,7 @@ To customise the widget an optional `options` argument can be provided with the 
 |getChildrenNodes|Function|Function that returns an array of children DNodes|
 |nodeAttributes|Function[]|An array of functions that return VNodeProperties to be applied to the VNode|
 
-By default the base widget class applies an `id`, `classes` and `styles` from the widgets specified `state` (either by direct state injection or via an observable store).
+By default the base widget class applies `id`, `classes` and `styles` from the widgets specified `state` (either by direct state injection or via an observable store).
 
 ```ts
 const myBasicWidget = createWidgetBase({
@@ -91,20 +91,20 @@ const myBasicWidget = createWidgetBase({
 });
 ```
 
-Create the following DOM element:
+Creates the following DOM element:
 
 ```html
 <div data-widget-id="my-widget" class="class-a class-b" styles="width:20px"></div>
 ```
 
-Alternatively state can be derived directly from an observable store provided as the `stateFrom`, to create the same DOM element.
+Alternatively state can be derived directly from an observable store passed via `stateFrom`. The following code will create the same DOM element as the above example.
 
 ```ts
 const widgetStore = createObservableStore({
 	data: [
-		{ 
-			id: 'my-widget', 
-			classes: [ 'class-a', 'class-b' ], 
+		{
+			id: 'my-widget',
+			classes: [ 'class-a', 'class-b' ],
 			styles: [ 'width:20px' ]
 		}
 	]
@@ -121,8 +121,8 @@ Children can be nested within a widget by providing a `getChildrenNodes` functio
 ```ts
 const widgetStore = createObservableStore({
 	data: [
-		{ 
-			id: 'my-list-widget', 
+		{
+			id: 'my-list-widget',
 			items: [
 				{ id: '1', name: 'name-1' },
 				{ id: '2', name: 'name-2' },
@@ -137,7 +137,7 @@ const getChildrenNodes = function(this: Widget<WidgetState>) {
 	const listItems = this.state.items.map((item) => {
 		return d('li', { innnerHTML: item.name });
 	});
-	
+
 	return listItems;
 };
 
@@ -157,7 +157,7 @@ Creates the following DOM structure
 	<li>name-3</li>
 	<li>name-4</li>
 </ul>
-``` 
+```
 ### `d`
 
 `d` is a function that is used within Dojo 2 to express widget hierarchical struture using both Dojo 2 widget factories or hyperscript, it is imported via
@@ -276,7 +276,7 @@ export default createListWidget;
 
 ### Projector
 
-In order to render widgets they need to be appended to a `projector`. It is possible to create multiple projectors and attach them to `Elements` in the `DOM`, however `projectors` must not be nested.
+In order to render widgets they must be appended to a `projector`. It is possible to create multiple projectors and attach them to `Elements` in the `DOM`, however `projectors` must not be nested.
 
 More to follow.
 
