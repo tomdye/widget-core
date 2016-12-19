@@ -1,17 +1,10 @@
 import { ComposeFactory } from 'dojo-compose/compose';
 import { Widget, WidgetOptions, WidgetState, DNode } from '../../interfaces';
 import createWidgetBase from '../../createWidgetBase';
-import { v, w } from '../../d';
-import createTab, { TabOptions } from '../tab/createTab';
-import * as css from './tabpanel.m.styl';
+import { v } from '../../d';
+import * as css from './tabpanel.module.styl';
 
-export interface TabPanelTabs extends TabOptions {
-	content: DNode;
-}
-
-export interface TabPanelState extends WidgetState {
-	tabs?: TabPanelTabs[];
-}
+export interface TabPanelState extends WidgetState {}
 
 export interface TabPanelOptions extends WidgetOptions<TabPanelState> {}
 
@@ -21,13 +14,18 @@ export interface TabPanelFactory extends ComposeFactory<TabPanel, TabPanelOption
 
 const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 	mixin: {
-		tagName: 'div',
+		tagName: 'tab-panel',
 		classes: [ css.root ],
 		getChildrenNodes: function (this: TabPanel): DNode[] {
-			const { tabs = [] } = this.state;
 			return [
-				v(`ul.${css.tabs}`, tabs.map((tab) => w(createTab, tab))),
-				v(`div.${css.panels}`, tabs.map((tab) => v(`div.${css.panel}`, [ tab.content ])))
+				v(`ul.${css.tabs}`, [
+					v('li', [ 'tab1' ]),
+					v(`li.${css.activeTab}`, [ 'tab2' ]),
+					v('li', [ 'tab3' ])
+				]),
+				v(`div.${css.panels}`, [
+					v(`div.${css.panel}`, [ 'hello world' ])
+				])
 			];
 		}
 	}

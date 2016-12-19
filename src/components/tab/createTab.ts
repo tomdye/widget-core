@@ -2,7 +2,7 @@ import { ComposeFactory } from 'dojo-compose/compose';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 import { Widget, WidgetOptions, WidgetState } from '../../interfaces';
 import createWidgetBase from '../../createWidgetBase';
-import * as css from './tab.m.styl';
+import * as css from './tab.module.styl';
 
 export interface TabState extends WidgetState {
 	label?: string;
