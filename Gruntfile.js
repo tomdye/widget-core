@@ -2,6 +2,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-postcss');
 
+	var path = require('path');
+	var fs = require('fs');
+
 	require('grunt-dojo2').initConfig(grunt, {
 		stylus: {
 			dist: {
@@ -19,7 +22,15 @@ module.exports = function (grunt) {
 				map: true,
 				processors: [
 					require('postcss-modules')({
-						generateScopedName: '[name]__[local]__[hash:base64:5]'
+						generateScopedName: '[name]__[local]__[hash:base64:5]',
+						getJSON: function(cssFileName, json) {
+
+							var jsonFileName = cssFileName + '.styl';
+
+							console.log(`jsonFileName: ${jsonFileName}`);
+
+							fs.writeFileSync(jsonFileName, JSON.stringify(json));
+						}
 					})
 				]
 			},

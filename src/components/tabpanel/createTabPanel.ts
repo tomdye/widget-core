@@ -1,14 +1,14 @@
 import { ComposeFactory } from 'dojo-compose/compose';
-import { Widget, WidgetOptions, WidgetState, DNode } from '../../interfaces';
+import { Widget, WidgetOptions, WidgetProperties, WidgetState, DNode } from '../../interfaces';
 import createWidgetBase from '../../createWidgetBase';
 import { v } from '../../d';
 import * as css from './tabpanel.module.styl';
 
 export interface TabPanelState extends WidgetState {}
 
-export interface TabPanelOptions extends WidgetOptions<TabPanelState> {}
+export interface TabPanelOptions extends WidgetOptions<TabPanelState, WidgetProperties> {}
 
-export type TabPanel = Widget<TabPanelState>;
+export type TabPanel = Widget<TabPanelState, WidgetProperties>;
 
 export interface TabPanelFactory extends ComposeFactory<TabPanel, TabPanelOptions> {}
 
