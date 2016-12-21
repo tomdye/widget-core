@@ -24,10 +24,7 @@ module.exports = function (grunt) {
 					require('postcss-modules')({
 						generateScopedName: '[name]__[local]__[hash:base64:5]',
 						getJSON: function(cssFileName, json) {
-
-							var jsonFileName = cssFileName + '.styl';
-
-							console.log(`jsonFileName: ${jsonFileName}`);
+							var jsonFileName = cssFileName.replace(/.css$/, '.styl.json');
 
 							fs.writeFileSync(jsonFileName, JSON.stringify(json));
 						}
