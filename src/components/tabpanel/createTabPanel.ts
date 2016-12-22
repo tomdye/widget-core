@@ -19,9 +19,9 @@ const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 		getChildrenNodes: function (this: TabPanel): DNode[] {
 			return [
 				v(`ul.${css.tabs}`, [
-					v('li', [ 'tab1' ]),
-					v(`li.${css.activeTab}`, [ 'tab2' ]),
-					v('li', [ 'tab3' ])
+					v(`li.${css.tab}`, [ 'tab1' ]),
+					v(`li.${css.tab}.${css.activeTab}`, [ 'tab2' ]),
+					v(`li.${css.tab}`, [ 'tab3' ])
 				]),
 				v(`div.${css.panels}`, [
 					v(`div.${css.panel}`, [ 'hello world' ])

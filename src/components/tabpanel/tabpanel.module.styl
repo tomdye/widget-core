@@ -1,26 +1,40 @@
 .root {
 	display: block;
-	border: 1px solid black;
+	border: var(--tab-panel-border, 1px solid black);
+	background: var(--tab-panel-background, inherit);
+	color: var(--tab-panel-color, inherit);
+	border-radius: var(--tab-panel-border-radius, 0);
 }
 
 .tabs {
 	list-style: none;
-	margin: 0;
-	padding: 0;
-	border-bottom: 1px solid black;
-	> li {
-		display: inline-block;
-		margin: 0;
-		padding: 10px;
-		border-right: 1px solid black;
-		&:hover {
-			background: #6d6d6d;
-		}
+	margin: var(--tab-panel-tabs-margin, 0);
+	padding: var(--tab-panel-tabs-padding, 0);
+	border-bottom: var(--tab-panel-tabs-border-bottom, 1px solid black);
+	background: var(--tab-panel-tabs-background, inherit);
+}
+
+.tab {
+	display: inline-block;
+	margin: var(--tab-panel-tab-margin, 0);
+	padding: var(--tab-panel-tab-padding, 10px);
+	border-right: var(--tab-panel-tab-border-right, 1px solid black);
+	border-bottom: var(--tab-panel-tab-border-bottom, 0);
+	border: var(--tab-panel-tab-border, 0);
+	border-radius: var(--tab-panel-tab-border-radius, 0);
+	border-top-left-radius: var(--tab-panel-tab-border-top-left-radius, 0);
+	border-top-right-radius: var(--tab-panel-tab-border-top-right-radius, 0);
+
+	background: var(--tab-panel-tab-background, inherit);
+	color: var(--tab-panel-tab-color, inherit);
+	transition: var(--tab-panel-tab-transition, all 0.2s);
+	&:hover {
+		background: var(--tab-panel-tab-hover-background, #6d6d6d);
 	}
 }
 
 .activeTab {
-	background: #8d8d8d;
+	background: var(--tab-panel-tab-active-background, #8d8d8d);
 }
 
 .panels {
@@ -28,5 +42,5 @@
 }
 
 .panel {
-	padding: 10px;
+	padding: var(--tab-panel-padding, 10px);
 }
