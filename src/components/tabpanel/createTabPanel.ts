@@ -3,6 +3,7 @@ import { Widget, WidgetOptions, WidgetProperties, WidgetState, DNode } from '../
 import createWidgetBase from '../../createWidgetBase';
 import { v } from '../../d';
 import * as css from './tabpanel.module.styl';
+import themeManager from '../../themeManager';
 
 export interface TabPanelState extends WidgetState {}
 
@@ -17,14 +18,16 @@ const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 		tagName: 'tab-panel',
 		classes: [ css.root ],
 		getChildrenNodes: function (this: TabPanel): DNode[] {
+			const theme: any = themeManager.theme;
+
 			return [
-				v(`ul.${css.tabs}`, [
+				v(`ul.${css.tabs}.${theme.tabPanelTabs}`, [
 					v('li', [ 'tab1' ]),
-					v(`li.${css.activeTab}`, [ 'tab2' ]),
+					v(`li.${css.activeTab}.${theme.tabPanelActiveTab}`, [ 'tab2' ]),
 					v('li', [ 'tab3' ])
 				]),
-				v(`div.${css.panels}`, [
-					v(`div.${css.panel}`, [ 'hello world' ])
+				v(`div.${css.panels}.${theme.tabPanelPanels}`, [
+					v(`div.${css.panel}.${theme.tabPanelPanel}`, [ 'hello world' ])
 				])
 			];
 		}
