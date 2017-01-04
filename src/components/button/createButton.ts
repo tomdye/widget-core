@@ -3,6 +3,8 @@ import { VNodeProperties } from 'dojo-interfaces/vdom';
 import createWidgetBase from '../../createWidgetBase';
 import { Widget, WidgetOptions, WidgetProperties, WidgetState } from './../../interfaces';
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinState, FormFieldMixinOptions } from '../../mixins/createFormFieldMixin';
+import * as css from './button.module.styl';
+import themeManager from '../../themeManager';
 
 export interface ButtonState extends WidgetState, FormFieldMixinState<string> {
 	label?: string;
@@ -24,7 +26,11 @@ const createButton: ButtonFactory = createWidgetBase
 		mixin: {
 			nodeAttributes: [
 				function(this: Button): VNodeProperties {
-					return { innerHTML: this.state.label };
+					const theme = themeManager.getThemeClasses(css);
+					return {
+						innerHTML: this.state.label,
+						classes: theme.button
+					};
 				}
 			],
 			tagName: 'button',

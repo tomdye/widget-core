@@ -1,4 +1,7 @@
+@import '../../styles/variables';
+
 .tabPanel {
+	background: component-background;
 	display: block;
 	border: 1px solid black;
 }
@@ -7,12 +10,26 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	> li {
-		display: inline-block;
-		margin: 0;
-	}
+	border-bottom: 1px solid black;
+}
+
+.tabPanelTab {
+	composes: button from '../button/button.module.css';
+	display: inline-block;
+	margin: 0;
+	border: none;
+	border-right: 1px solid black;
+}
+
+.tabPanelPanel {
+	padding: input-padding;
 }
 
 .tabPanelPanels {
 	display: block;
+	background: inherit;
+}
+
+.tabPanelActiveTab {
+	background: darken(button-hover-background, 10%);
 }
