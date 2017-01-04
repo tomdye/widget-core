@@ -1,6 +1,3 @@
-// import * as defaultTheme from './themes/default/theme.module.styl';
-// import { assign } from 'dojo-core/lang';
-
 export type ActiveClassMap<T> = {
 	[P in keyof T]?: ActiveClasses;
 }
@@ -15,7 +12,7 @@ export type Theme = {
 
 function addClassNameToMap(classMap: ActiveClasses, classList: {}, className: string) {
 	if (classList && classList.hasOwnProperty(className)) {
-		// need to split this because css-module composition combines class names
+		// need to split this because css-module composition combines class names with a space
 		const generatedClassNames: string[] = (<any> classList)[className].split(' ');
 		generatedClassNames.forEach((generatedClassName) => {
 			classMap[generatedClassName] = true;
