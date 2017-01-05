@@ -3,7 +3,7 @@ import { VNodeProperties } from 'dojo-interfaces/vdom';
 import createWidgetBase from '../../createWidgetBase';
 import { Widget, WidgetOptions, WidgetProperties, WidgetState } from './../../interfaces';
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinState, FormFieldMixinOptions } from '../../mixins/createFormFieldMixin';
-import * as css from './button.m.css';
+import * as css from './button.css';
 import themeManager from '../../themeManager';
 
 export interface ButtonState extends WidgetState, FormFieldMixinState<string> {
