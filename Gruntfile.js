@@ -10,12 +10,10 @@ module.exports = function (grunt) {
 				map: true,
 				processors: [
 					require('postcss-modules')({
-						generateScopedName: '[name]__[local]__[hash:base64:5]'
-						// getJSON: function(cssFileName, json) {
-						// 	var jsonFileName = cssFileName.replace(/.css$/, '.styl.json');
-
-						// 	fs.writeFileSync(jsonFileName, JSON.stringify(json));
-						// }
+						generateScopedName: '[name]__[local]__[hash:base64:5]',
+						getJSON: function(cssFileName, json) {
+							fs.writeFileSync(jsonFileName + '.json', JSON.stringify(json));
+						}
 					})
 				]
 			},
@@ -23,8 +21,8 @@ module.exports = function (grunt) {
 				files: [ {
 					expand: true,
 					src: '**/*.m.css',
-					dest: 'dist/umd/',
-					ext: '.m.css'
+					dest: 'dist/umd',
+					cwd: 'src'
 				} ]
 			}
 		}
