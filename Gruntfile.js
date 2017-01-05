@@ -24,8 +24,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: [ {
-					expand: true,
-					src: 'dist/umd/**/*.css'
+					src: 'src/**/*.css'
 				} ]
 			}
 		}
@@ -38,7 +37,7 @@ module.exports = function (grunt) {
 		'clean:dist',
 		'copy:staticDefinitionFiles',
 		'ts:dist',
-		'copy:cssFiles',
+		// 'copy:cssFiles',
 		'postcss:dist',
 		'fixSourceMaps'
 	]);

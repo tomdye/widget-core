@@ -55,7 +55,7 @@
     "intern": "^3.4.1",
     "istanbul": "^0.4.5",
     "jsdom": "^9.5.0",
-    "postcss-modules": "^0.5.2",
+    "postcss-modules": "^0.6.2",
     "remap-istanbul": "^0.6.4",
     "sinon": "^1.17.6",
     "tslint": "^3.11.0",
