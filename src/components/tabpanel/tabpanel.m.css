@@ -1,7 +1,7 @@
-@import '../../styles/variables';
+/*@import '../../styles/variables';*/
 
 .tabPanel {
-	background: component-background;
+	background: red;
 	display: block;
 	border: 1px solid black;
 }
@@ -14,7 +14,7 @@
 }
 
 .tabPanelTab {
-	composes: 'button' from '../button/button.module.css';
+	composes: 'button' from '../button/button.m.css';
 	display: inline-block;
 	margin: 0;
 	border: none;
@@ -22,7 +22,7 @@
 }
 
 .tabPanelPanel {
-	padding: input-padding;
+	padding: 10px;
 }
 
 .tabPanelPanels {
@@ -31,5 +31,5 @@
 }
 
 .tabPanelActiveTab {
-	background: darken(button-hover-background, 10%);
+	background: green;
 }

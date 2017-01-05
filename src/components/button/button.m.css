@@ -1,10 +1,11 @@
 @import '../../styles/variables';
 
 .button {
-	background: button-background-color;
-	padding: input-padding;
+	background: red;
+	padding: 10px;
 	border: 1px solid black;
-	&:hover {
-		background: button-hover-background;
-	}
+}
+
+.button:hover {
+	background: green;
 }
