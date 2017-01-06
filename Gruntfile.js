@@ -5,26 +5,25 @@ module.exports = function (grunt) {
 	var fs = require('fs');
 
 	require('grunt-dojo2').initConfig(grunt, {
-		copy: {
-			cssFiles: {
-				expand: true,
-				cwd: 'src',
-				src: [ '**/*.css' ],
-				dest: '<%= distDirectory %>'
-			}
-		},
 		postcss: {
 			options: {
 				map: true,
 				processors: [
 					require('postcss-modules')({
-						generateScopedName: '[name]__[local]__[hash:base64:5]'
+						generateScopedName: '[name]__[local]__[hash:base64:5]',
+						getJSON: function(cssFileName, json) {
+							var outputPath = path.resolve(grunt.config.data.distDirectory, path.relative('src', cssFileName))
+							fs.writeFileSync(outputPath + '.json', JSON.stringify(json));
+						}
 					})
 				]
 			},
 			dist: {
 				files: [ {
-					src: 'src/**/*.css'
+					expand: true,
+					src: '**/*.css',
+					dest: '<%= distDirectory %>',
+					cwd: 'src'
 				} ]
 			}
 		}
@@ -37,7 +36,6 @@ module.exports = function (grunt) {
 		'clean:dist',
 		'copy:staticDefinitionFiles',
 		'ts:dist',
-		// 'copy:cssFiles',
 		'postcss:dist',
 		'fixSourceMaps'
 	]);
