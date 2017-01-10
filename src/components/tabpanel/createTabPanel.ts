@@ -17,10 +17,21 @@ export type TabPanel = Widget<TabPanelState, TabPanelProperties>;
 
 export interface TabPanelFactory extends ComposeFactory<TabPanel, TabPanelOptions> {}
 
+function formatTagNameAndClasses(tagName: string, classes: string[]) {
+	if (classes.length) {
+		return `${tagName}.${classes.join('.')}`;
+	}
+	return tagName;
+}
+
 const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'tab-panel',
-		classes: [ css.tabPanel ],
+		getNode(this: TabPanel): DNode {
+			const theme = themeManager.getThemeClasses(css);
+			const tag = formatTagNameAndClasses(this.tagName, [ ...Object.keys(theme.tabPanel), ...this.classes ]);
+			return v(tag, this.getNodeAttributes(), this.getChildrenNodes());
+		},
 		getChildrenNodes: function (this: TabPanel): DNode[] {
 			const { overrideClasses } = this.properties;
 			const theme = themeManager.getThemeClasses(css, overrideClasses);
@@ -28,7 +39,7 @@ const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 			return [
 				v(`ul`, { classes: theme.tabPanelTabs }, [
 					v('li', { classes: theme.tabPanelTab }, [ 'tab1' ]),
-					v('li', { classes: { ...theme.tabPanelActiveTab, ...theme.tabPanelTab } }, [ 'tab2' ]),
+					v('li', { classes: { ...theme.tabPanelTab, ...theme.tabPanelActiveTab } }, [ 'tab2' ]),
 					v('li', { classes: theme.tabPanelTab }, [ 'tab3' ])
 				]),
 				v('div', { classes: theme.tabPanelPanels }, [
