@@ -1,3 +1,21 @@
 :root {
-	--primary-color: blue;
+	/* Base colours */
+	--dojo-green: #01D48E;
+	--dojo-blue: #51ADED;
+	--dojo-red: #ED5153;
+	--dojo-base-gray: #E2E2E2;
+	--dojo-off-white: #FBFBFB;
+	--dojo-light-gray: #F1F1F1;
+	--dojo-gray: #9E9E9E;
+	--dojo-black: #5A5A5A;
+
+	/* Theme vars */
+	--dojo-theme-color: var(--dojo-red);
+	--dojo-border-color: var(--dojo-gray);
+	--dojo-border-hover-color: var(--dojo-black);
+
+	--dojo-input-padding: 10px;
+
+	--dojo-input-border: 1px solid var(--dojo-border-color);
+	--dojo-input-hover-border: 1px solid var(--dojo-border-hover-color);
 }

@@ -12,9 +12,9 @@ module.exports = function (grunt) {
 					require('postcss-import'),
 					require('postcss-cssnext')({
 						features: {
-							customProperties: {
-								preserve: 'computed'
-							},
+							// customProperties: {
+							// 	preserve: 'computed'
+							// },
 							autoprefixer: {
 								browsers: [
 									'last 2 versions',
@@ -39,6 +39,26 @@ module.exports = function (grunt) {
 					dest: '<%= distDirectory %>',
 					cwd: 'src'
 				} ]
+			},
+			variables: {
+				options: {
+					processors: [
+						require('postcss-import'),
+						require('postcss-cssnext')({
+							features: {
+								customProperties: {
+									preserve: 'computed'
+								}
+							}
+						})
+					]
+				},
+				files: [ {
+					expand: true,
+					src: '**/variables.css',
+					dest: '<%= distDirectory %>',
+					cwd: 'src'
+				} ]
 			}
 		}
 	});
@@ -51,6 +71,7 @@ module.exports = function (grunt) {
 		'copy:staticDefinitionFiles',
 		'ts:dist',
 		'postcss:dist',
+		'postcss:variables',
 		'fixSourceMaps'
 	]);
 };

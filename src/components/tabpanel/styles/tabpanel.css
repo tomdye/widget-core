@@ -1,7 +1,7 @@
 @import '../../../styles/variables';
 
 :root {
-	--my-color: color(var(--primary-color) l(20%));
+	--my-color: color(var(--dojo-theme-color) l(20%));
 }
 
 .tabPanel {

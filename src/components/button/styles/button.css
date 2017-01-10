@@ -1,9 +1,10 @@
+@import '../../../styles/variables';
+
 .button {
-	background: red;
-	padding: 10px;
-	border: 1px solid black;
+	padding: var(--dojo-input-padding);
+	border: var(--dojo-input-border);
 }
 
 .button:hover {
-	background: green;
+	border: var(--dojo-input-hover-border);
 }
