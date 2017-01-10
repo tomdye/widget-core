@@ -14,8 +14,17 @@
 	--dojo-border-color: var(--dojo-gray);
 	--dojo-border-hover-color: var(--dojo-black);
 
+	--dojo-button-background: var(--dojo-base-gray);
+	--dojo-button-hover-background: color(var(--dojo-base-gray) b(+15%));
+
 	--dojo-input-padding: 10px;
+	--dojo-outer-margin: 5px;
+
+	--dojo-active-background: var(--dojo-theme-color);
 
 	--dojo-input-border: 1px solid var(--dojo-border-color);
 	--dojo-input-hover-border: 1px solid var(--dojo-border-hover-color);
+
+	--dojo-transition-time: 0.3s;
+	--dojo-input-background-transition: background var(--dojo-transition-time);
 }

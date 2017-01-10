@@ -1,40 +1,33 @@
 @import '../../../styles/variables';
 
-:root {
-	--my-color: color(var(--dojo-theme-color) l(20%));
-}
-
 .tabPanel {
-	background: var(--my-color);
 	display: block;
-	border: 1px solid black;
-	border-radius: 5px;
+	border: 1px solid var(--dojo-border-color);
 }
 
 .tabPanelTabs {
 	list-style: none;
 	margin: 0;
-	padding: 0;
-	border-bottom: 1px solid black;
+	padding: var(--dojo-outer-margin);
+	border-bottom: 1px solid var(--dojo-border-color);
 }
 
 .tabPanelTab {
 	composes: button from '../../button/styles/button.css';
 	display: inline-block;
-	margin: 0;
-	border: none;
-	border-right: 1px solid black;
+	margin-right: var(--dojo-outer-margin);
+	border-right: 1px solid var(--dojo-border-color);
+}
+
+.tabPanelTab.tabPanelActiveTab {
+	background: var(--dojo-active-background);
 }
 
 .tabPanelPanel {
-	padding: 10px;
+	padding: var(--dojo-input-padding);
 }
 
 .tabPanelPanels {
 	display: block;
 	background: inherit;
-}
-
-.tabPanelActiveTab {
-	background: green;
 }

@@ -3,8 +3,15 @@
 .button {
 	padding: var(--dojo-input-padding);
 	border: var(--dojo-input-border);
+	transition: var(--dojo-input-background-transition);
+	background: var(--dojo-button-background);
 }
 
 .button:hover {
 	border: var(--dojo-input-hover-border);
+	background: var(--dojo-button-hover-background);
+}
+
+.button:active {
+	background: var(--dojo-active-background);
 }
