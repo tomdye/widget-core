@@ -12,9 +12,6 @@ module.exports = function (grunt) {
 					require('postcss-import'),
 					require('postcss-cssnext')({
 						features: {
-							// customProperties: {
-							// 	preserve: 'computed'
-							// },
 							autoprefixer: {
 								browsers: [
 									'last 2 versions',
