@@ -9,6 +9,20 @@ module.exports = function (grunt) {
 			options: {
 				map: true,
 				processors: [
+					require('postcss-import'),
+					require('postcss-cssnext')({
+						features: {
+							customProperties: {
+								preserve: 'computed'
+							},
+							autoprefixer: {
+								browsers: [
+									'last 2 versions',
+									'ie >= 10'
+								]
+							}
+						}
+					}),
 					require('postcss-modules')({
 						generateScopedName: '[name]__[local]__[hash:base64:5]',
 						getJSON: function(cssFileName, json) {

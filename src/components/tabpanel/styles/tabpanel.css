@@ -1,7 +1,14 @@
+@import '../../../styles/variables';
+
+:root {
+	--my-color: color(var(--primary-color) l(20%));
+}
+
 .tabPanel {
-	background: red;
+	background: var(--my-color);
 	display: block;
 	border: 1px solid black;
+	border-radius: 5px;
 }
 
 .tabPanelTabs {
@@ -12,7 +19,7 @@
 }
 
 .tabPanelTab {
-	composes: button from '../button/button.css';
+	composes: button from '../../button/styles/button.css';
 	display: inline-block;
 	margin: 0;
 	border: none;
