@@ -3,12 +3,12 @@ import { Widget, WidgetOptions, WidgetProperties, WidgetState, DNode } from '../
 import createWidgetBase from '../../createWidgetBase';
 import { v } from '../../d';
 import * as css from './styles/tabpanel';
-import themeManager, { Theme } from '../../themeManager';
+import themeManager from '../../themeManager';
 
 export interface TabPanelState extends WidgetState {}
 
 export interface TabPanelProperties extends WidgetProperties {
-	overrideClasses: Theme;
+	overrideClasses: {};
 }
 
 export interface TabPanelOptions extends WidgetOptions<TabPanelState, TabPanelProperties> {}

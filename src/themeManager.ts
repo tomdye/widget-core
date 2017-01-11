@@ -23,11 +23,11 @@ function addClassNameToMap(classMap: ActiveClasses, classList: {}, className: st
 export class ThemeManager  {
 	private _loadedTheme: Theme;
 
-	setTheme(theme: Theme) {
+	setTheme(theme: {}) {
 		this._loadedTheme = theme;
 	}
 
-	getThemeClasses<T extends {}>(baseThemeClasses: T, overrideClasses?: Theme): ActiveClassMap<T> {
+	getThemeClasses<T extends {}>(baseThemeClasses: T, overrideClasses?: {}): ActiveClassMap<T> {
 		// create the class map to be returned
 		const activeClassMap: ActiveClassMap<T> = <ActiveClassMap<T>> {};
 
