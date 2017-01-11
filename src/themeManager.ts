@@ -23,7 +23,7 @@ function addClassNameToMap(classMap: ActiveClasses, classList: {}, className: st
 export class ThemeManager  {
 	private _loadedTheme: Theme;
 
-	set theme(theme: Theme) {
+	setTheme(theme: Theme) {
 		this._loadedTheme = theme;
 	}
 
