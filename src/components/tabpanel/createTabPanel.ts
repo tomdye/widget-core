@@ -7,13 +7,9 @@ import themeManager from '../../themeManager';
 
 export interface TabPanelState extends WidgetState {}
 
-export interface TabPanelProperties extends WidgetProperties {
-	overrideClasses: {};
-}
+export interface TabPanelOptions extends WidgetOptions<TabPanelState, WidgetProperties> {}
 
-export interface TabPanelOptions extends WidgetOptions<TabPanelState, TabPanelProperties> {}
-
-export type TabPanel = Widget<TabPanelState, TabPanelProperties>;
+export type TabPanel = Widget<TabPanelState, WidgetProperties>;
 
 export interface TabPanelFactory extends ComposeFactory<TabPanel, TabPanelOptions> {}
 

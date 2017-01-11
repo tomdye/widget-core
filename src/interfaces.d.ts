@@ -251,6 +251,7 @@ export interface WidgetOptions<S extends WidgetState, P extends WidgetProperties
 export interface WidgetProperties {
 	id?: string;
 	classes?: string[];
+	overrideClasses?: {};
 }
 
 export interface WidgetState {
