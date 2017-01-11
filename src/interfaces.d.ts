@@ -6,10 +6,9 @@
  */
 import Promise from 'dojo-shim/Promise';
 import { EventedListener, Stateful, StatefulOptions } from 'dojo-interfaces/bases';
-import { EventTargettedObject, Handle, StylesMap } from 'dojo-interfaces/core';
+import { EventTargettedObject, EventTypedObject, Handle, StylesMap } from 'dojo-interfaces/core';
 import { VNode, VNodeProperties } from 'dojo-interfaces/vdom';
 import { ComposeFactory } from 'dojo-compose/compose';
-import { VNodeEvented, VNodeEventedOptions } from './mixins/createVNodeEvented';
 
 /**
  * A function that is called to return top level node
@@ -23,6 +22,24 @@ export interface NodeFunction {
  */
 export interface ChildNodeFunction {
 	(this: Widget<WidgetState, WidgetProperties>): DNode[];
+}
+
+/**
+ * the event emitted on properties:changed
+ */
+export interface PropertiesChangeEvent<T, P extends WidgetProperties> extends EventTypedObject<'properties:changed'> {
+	/**
+	 * the full set of properties
+	 */
+	properties: P;
+	/**
+	 * the changed properties between setProperty calls
+	 */
+	changedPropertyKeys: string[];
+	/**
+	 * the target (this)
+	 */
+	target: T;
 }
 
 /**
@@ -94,21 +111,39 @@ export interface WNode {
 
 export type DNode = HNode | WNode | string | null;
 
-export type Widget<S extends WidgetState, P extends WidgetProperties> = Stateful<S> & WidgetMixin<P> & WidgetOverloads & VNodeEvented;
+export type Widget<S extends WidgetState, P extends WidgetProperties> = Stateful<S> & WidgetMixin<P> & WidgetOverloads<P>
 
 export interface WidgetFactory extends ComposeFactory<Widget<WidgetState, WidgetProperties>, WidgetOptions<WidgetState, WidgetProperties>> {}
 
-export interface WidgetOverloads {
+export interface WidgetOverloads<P extends WidgetProperties> {
 	/**
 	 * Attach a listener to the invalidated event, which is emitted when the `.invalidate()` method is called
 	 *
 	 * @param type The event type to listen for
 	 * @param listener The listener to call when the event is emitted
 	 */
-	on(type: 'invalidated', listener: EventedListener<Widget<WidgetState, WidgetProperties>, EventTargettedObject<Widget<WidgetState, WidgetProperties>>>): Handle;
+	on(type: 'invalidated', listener: EventedListener<Widget<WidgetState, P>, EventTargettedObject<Widget<WidgetState, P>>>): Handle;
+	/**
+	 * Attach a listener to the properties changed event, which is emitted when a difference in properties passed occurs
+	 *
+	 * @param type The event type to listen for
+	 * @param listener The listener to call when the event is emitted
+	 */
+	on(type: 'properties:changed', listener: EventedListener<Widget<WidgetState, P>, PropertiesChangeEvent<Widget<WidgetState, P>, P>>): Handle;
 }
 
-export interface WidgetMixin<P extends WidgetProperties> {
+export interface PropertyComparison<P extends WidgetProperties> {
+	/**
+	 * Determine changed or new property keys on setProperties
+	 */
+	diffProperties<S>(this: S, previousProperties: P, newProperties: P): string[];
+	/**
+	 * Construct properties object for this.properties
+	 */
+	assignProperties<S>(this: S, previousProperties: P, newProperties: P, changedPropertyKeys: string[]): P;
+}
+
+export interface WidgetMixin<P extends WidgetProperties> extends PropertyComparison<P> {
 	/**
 	 * Classes which are applied upon render.
 	 *
@@ -143,23 +178,23 @@ export interface WidgetMixin<P extends WidgetProperties> {
 	/**
 	 * Properties passed to affect state
 	 */
-	properties: Partial<P>;
+	properties: P;
+
+	/*
+	 * set properties on the widget
+	 */
+	setProperties(this: Widget<WidgetState, WidgetProperties>, properties: P): void;
 
 	/**
-	 * Determine changed or new property keys on render.
+	 * Called when the properties have changed
 	 */
-	diffProperties(this: Widget<WidgetState, WidgetProperties>, previousProperties: P): string[];
-
-	/**
-	 * apply change in properties
-	 */
-	applyChangedProperties(previousProperties: Partial<P>, currentProperties: Partial<P>): void;
+	onPropertiesChanged(this: Widget<WidgetState, WidgetProperties>, properties: P, changedPropertyKeys: string[]): void;
 
 	/**
 	 * The ID of the widget, which gets automatically rendered in the VNode property `data-widget-id` when
 	 * rendered.
 	 */
-	readonly id: string;
+	readonly id: string | undefined;
 
 	/**
 	 * Signal to the widget that it is in an invalid state and that it should not re-use its cache on the
@@ -204,7 +239,7 @@ export interface WidgetMixin<P extends WidgetProperties> {
 	readonly registry: FactoryRegistryInterface;
 }
 
-export interface WidgetOptions<S extends WidgetState, P extends WidgetProperties> extends StatefulOptions<S>, VNodeEventedOptions {
+export interface WidgetOptions<S extends WidgetState, P extends WidgetProperties> extends StatefulOptions<S> {
 	/**
 	 * Properties used to affect internal widget state
 	 */
@@ -214,7 +249,8 @@ export interface WidgetOptions<S extends WidgetState, P extends WidgetProperties
 }
 
 export interface WidgetProperties {
-	[key: string]: any;
+	id?: string;
+	classes?: string[];
 }
 
 export interface WidgetState {

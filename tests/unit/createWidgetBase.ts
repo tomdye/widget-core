@@ -50,26 +50,15 @@ registerSuite({
 			assert.deepEqual(renderedWidget.vnodeSelector, 'header.class-one.classTwo');
 	},
 	'getNodeAttributes()'() {
-		let clickCalled = false;
-		const expectedClickFunction = () => {
-			clickCalled = true;
-		};
-
 		const widgetBase = createWidgetBase({
-			properties: { id: 'foo', classes: [ 'bar' ] },
-			listeners: {
-				click: expectedClickFunction
-			}
+			properties: { id: 'foo', classes: [ 'bar' ] }
 		});
 
 		let nodeAttributes = widgetBase.getNodeAttributes();
 
 		assert.strictEqual(nodeAttributes['data-widget-id'], 'foo');
 		assert.deepEqual(nodeAttributes.classes, { bar: true });
-		assert.strictEqual(Object.keys(nodeAttributes).length, 5);
-		assert.isFunction(nodeAttributes.onclick);
-		nodeAttributes.onclick!();
-		assert.isTrue(clickCalled);
+		assert.strictEqual(Object.keys(nodeAttributes).length, 4);
 
 		widgetBase.setState({ 'id': 'foo', classes: ['foo'] });
 
@@ -79,35 +68,36 @@ registerSuite({
 	},
 	diffProperties: {
 		'no updated properties'() {
-			const widgetBase = createWidgetBase({ properties: { id: 'id', foo: 'bar' }});
-			const updatedKeys = widgetBase.diffProperties({ id: 'id', foo: 'bar' });
+			const properties = { id: 'id', foo: 'bar' };
+			const widgetBase = createWidgetBase();
+			const updatedKeys = widgetBase.diffProperties(<any> { id: 'id', foo: 'bar' }, properties);
 			assert.lengthOf(updatedKeys, 0);
 		},
 		'updated properties'() {
-			const widgetBase = createWidgetBase({ properties: { id: 'id', foo: 'bar' }});
-			widgetBase.properties = { id: 'id', foo: 'baz' };
-			const updatedKeys = widgetBase.diffProperties({ id: 'id', foo: 'bar' });
+			const widgetBase = createWidgetBase();
+			const properties = { id: 'id', foo: 'baz' };
+			const updatedKeys = widgetBase.diffProperties(<any> { id: 'id', foo: 'bar' }, properties);
 			assert.lengthOf(updatedKeys, 1);
 		},
 		'new properties'() {
-			const widgetBase = createWidgetBase({ properties: { id: 'id', foo: 'bar' }});
-			widgetBase.properties = { id: 'id', foo: 'bar', bar: 'baz' };
-			const updatedKeys = widgetBase.diffProperties({ id: 'id', foo: 'bar' });
+			const widgetBase = createWidgetBase();
+			const properties = { id: 'id', foo: 'bar', bar: 'baz' };
+			const updatedKeys = widgetBase.diffProperties(<any> { id: 'id', foo: 'bar' }, properties);
 			assert.lengthOf(updatedKeys, 1);
 		},
 		'updated / new properties with falsy values'() {
-			const widgetBase = createWidgetBase({ properties: { id: 'id', foo: 'bar' }});
-			widgetBase.properties = { id: 'id', foo: '', bar: null, baz: 0, qux: false };
-			const updatedKeys = widgetBase.diffProperties({ id: 'id', foo: 'bar' });
+			const widgetBase = createWidgetBase();
+			const properties = { id: 'id', foo: '', bar: null, baz: 0, qux: false };
+			const updatedKeys = widgetBase.diffProperties(<any> { id: 'id', foo: 'bar' }, properties);
 			assert.lengthOf(updatedKeys, 4);
 			assert.deepEqual(updatedKeys, [ 'foo', 'bar', 'baz', 'qux']);
 		}
 	},
-	applyChangedProperties() {
-		const widgetBase = createWidgetBase({ id: 'id' });
-		widgetBase.applyChangedProperties({}, { foo: 'bar' });
+	onPropertiesChanged() {
+		const widgetBase = createWidgetBase();
+		widgetBase.onPropertiesChanged(<any> { foo: 'bar', myFunction: () => {} }, [ 'foo', 'myFunction' ]);
 		assert.equal((<any> widgetBase.state).foo, 'bar');
-		assert.equal(widgetBase.state.id, 'id');
+		assert.isUndefined((<any> widgetBase.state).myFunction);
 	},
 	getChildrenNodes: {
 		'getChildrenNodes with no ChildNodeRenderers'() {
@@ -239,7 +229,7 @@ registerSuite({
 			});
 			const createMyWidget = createWidgetBase.mixin({
 				mixin: {
-					getChildrenNodes: function(this: any) {
+					getChildrenNodes: function(this: any): DNode[] {
 						return [ w('my-header', {}) ];
 					}
 				},
@@ -484,17 +474,12 @@ registerSuite({
 			};
 
 			const myWidget = createWidgetBase({ properties });
-			myWidget.__render__();
 			assert.deepEqual((<any> myWidget.state).items, [ 'a', 'b' ]);
 			properties.items.push('c');
-			myWidget.properties = properties;
-			myWidget.invalidate();
-			myWidget.__render__();
+			myWidget.setProperties(properties);
 			assert.deepEqual((<any> myWidget.state).items , [ 'a', 'b', 'c' ]);
 			properties.items.push('d');
-			myWidget.properties = properties;
-			myWidget.invalidate();
-			myWidget.__render__();
+			myWidget.setProperties(properties);
 			assert.deepEqual((<any> myWidget.state).items , [ 'a', 'b', 'c', 'd' ]);
 		},
 		'__render__ with internally updated array state'() {
@@ -533,14 +518,7 @@ registerSuite({
 		}
 	},
 	'id': {
-		'in options'() {
-			const widgetBase = createWidgetBase({
-				id: 'foo'
-			});
-
-			assert.strictEqual(widgetBase.id, 'foo');
-		},
-		'in state'() {
+		'in properties'() {
 			const widgetBase = createWidgetBase({
 				properties: {
 					id: 'foo'
@@ -549,20 +527,10 @@ registerSuite({
 
 			assert.strictEqual(widgetBase.id, 'foo');
 		},
-		'in options and properties'() {
-			const widgetBase = createWidgetBase({
-				id: 'foo',
-				properties: {
-					id: 'bar'
-				}
-			});
-
-			assert.strictEqual(widgetBase.id, 'bar');
-		},
-		'not in options or properties'() {
+		'not in properties'() {
 			const widgetBase = createWidgetBase();
 
-			assert.include(widgetBase.id, 'widget-');
+			assert.isUndefined(widgetBase.id);
 		},
 		'is read only'() {
 			const widgetBase = createWidgetBase();

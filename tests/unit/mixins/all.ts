@@ -1,4 +1,4 @@
 import './createCssTransitionMixin';
 import './createFormFieldMixin';
-import './createVNodeEvented';
+import './createI18nMixin';
 import './shallowPropertyComparisonMixin';

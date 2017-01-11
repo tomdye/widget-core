@@ -17,8 +17,10 @@ For more background on dojo-widgets, there is a document describing the [widgeti
     	- [Simple Widgets](#simple-widgets)
     	- [d](#d)
     	- [Widgets with Children](#widgets-with-children)
-    - [Authoring Custom Widgets](#authoring-custom-widgets)
+    - [Authoring Widgets](#authoring-widgets)
+    - [Event Handlers](#event-handlers)
     - [Projector](#projector)
+    - [Internationalization](#internationalization)
     - [Dojo Widget Components](#dojo-widget-components)
 - [How Do I Contribute?](#how-do-i-contribute)
     - [Installation](#installation)
@@ -273,7 +275,7 @@ w(createFactory, options, children);
 w('my-factory', options, children);
 ```
 
-### Authoring Custom Widgets
+### Authoring Widgets
 
 To create custom reusable widgets you can extend `createWidgetBase`.
 
@@ -361,6 +363,47 @@ const createListWidget: ListFactory = createWidgetBase.mixin({
 export default createListWidget;
 ```
 
+### Event Handlers
+
+The recommended pattern for event handlers is to declare them on the widget class, referencing the function using `this` most commonly within `getChildrenNodes` or a `nodeAttributes` function.
+
+Event handlers can be internal logic encapsulated within a widget as shown in the first example or they can delegate to a function that is passed via `properties` as shown in the second example.
+
+*internally defined handler*
+
+```ts
+const createMyWidget: MyWidgetFactory = createWidgetBase.mixin({
+	mixin: {
+		onClick: function (this: MyWidget): void {
+			this.setState(!this.state.selected);
+		},
+		getChildrenNodes(this: MyWidget): DNode[] {
+			const { state: { selected } } = this;
+			
+			return [
+				v('input', { type: 'checkbox', onclick: this.onClick }),
+				v('input', { type: 'text', disabled: this.state.selected })
+			];
+		}
+	}
+});
+
+```
+
+*Handler passed via properties*
+
+```ts
+const createMyWidget: MyWidgetFactory = createWidgetBase.mixin({
+	mixin: {
+		onClick: function (this: MyWidget): void {
+			this.properties.mySpecialFunction();
+		}
+		...
+	}
+});
+
+```
+
 ### Projector
 
 To render widgets they must be appended to a `projector`. It is possible to create many projectors and attach them to `Elements` in the `DOM`, however `projectors` must not be nested.
@@ -432,6 +475,57 @@ const app = createApp();
 
 app.append().then(() => {
 	console.log('projector is attached');
+});
+```
+
+### Internationalization
+
+Widgets can be internationalized by mixing in `dojo-widgets/mixins/createI18nMixin`. [Message bundles](https://github.com/dojo/i18n) are localized by passing them to `localizeBundle`. If the bundle supports the widget's current locale, but those locale-specific messages have not yet been loaded, then the default messages are returned and the widget will be invalidated once the locale-specific messages have been loaded. Each widget can have its own locale by setting its `state.locale`; if no locale is set, then the default locale as set by [`dojo-i18n`](https://github.com/dojo/i18n) is assumed.
+
+```typescript
+const createI18nWidget = createWidgetBase
+	.mixin(createI18nMixin)
+	.mixin({
+		mixin: {
+			nodeAttributes: [
+				function (attributes: VNodeProperties): VNodeProperties {
+					// Load the `greetings` messages for the current locale.
+					const messages = this.localizeBundle(greetings);
+					return { title: messages.hello };
+				}
+			],
+
+			getChildrenNodes: function () {
+				// Load the "greetings" messages for the current locale. If the locale-specific
+				// messages have not been loaded yet, then the default messages are returned,
+				// and the widget will be invalidated once the locale-specific messages have
+				// loaded.
+				const messages = this.localizeBundle(greetingsBundle);
+
+				return [
+					d(createLabel, {
+						state: {
+							// Passing a message string to a child widget.
+							label: messages.purchaseItems
+						}
+					}),
+					d(createButton, {
+						state: {
+							// Passing a formatted message string to a child widget.
+							label: messages.format('itemCount', { count: 2 })
+						}
+					})
+				];
+			}
+		}
+	});
+
+const widget = createI18nWidget({
+	state: {
+		// Set the locale for the widget and all of its children. Any child can still
+		// set its own locale.
+		locale: 'fr'
+	}
 });
 ```
 
