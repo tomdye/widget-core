@@ -5,7 +5,7 @@ import { Widget, WidgetOptions, WidgetProperties, WidgetState, DNode } from './.
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinState, FormFieldMixinOptions } from '../../mixins/createFormFieldMixin';
 import { v } from '../../d';
 import * as css from './styles/button';
-import themeManager from '../../themeManager';
+import themeManager from '../../theme/themeManager';
 
 export interface ButtonState extends WidgetState, FormFieldMixinState<string> {
 	label?: string;

@@ -10,10 +10,10 @@ export type Theme = {
 	[key: string]: string;
 }
 
-function addClassNameToMap(classMap: ActiveClasses, classList: {}, className: string) {
+function addClassNameToMap(classMap: ActiveClasses, classList: Theme, className: string) {
 	if (classList && classList.hasOwnProperty(className)) {
 		// need to split this because css-module composition combines class names with a space
-		const generatedClassNames: string[] = (<any> classList)[className].split(' ');
+		const generatedClassNames: string[] = classList[className].split(' ');
 		generatedClassNames.forEach((generatedClassName) => {
 			classMap[generatedClassName] = true;
 		});
@@ -25,6 +25,10 @@ export class ThemeManager  {
 
 	setTheme(theme: {}) {
 		this._loadedTheme = theme;
+	}
+
+	clearTheme() {
+		this._loadedTheme = {};
 	}
 
 	getThemeClasses<T extends {}>(baseThemeClasses: T, overrideClasses?: {}): ActiveClassMap<T> {

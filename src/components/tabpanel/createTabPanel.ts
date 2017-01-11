@@ -3,7 +3,7 @@ import { Widget, WidgetOptions, WidgetProperties, WidgetState, DNode } from '../
 import createWidgetBase from '../../createWidgetBase';
 import { v } from '../../d';
 import * as css from './styles/tabpanel';
-import themeManager from '../../themeManager';
+import themeManager from '../../theme/themeManager';
 
 export interface TabPanelState extends WidgetState {}
 
