@@ -13,21 +13,10 @@ export type TabPanel = Widget<TabPanelState, WidgetProperties>;
 
 export interface TabPanelFactory extends ComposeFactory<TabPanel, TabPanelOptions> {}
 
-function formatTagNameAndClasses(tagName: string, classes: string[]) {
-	if (classes.length) {
-		return `${tagName}.${classes.join('.')}`;
-	}
-	return tagName;
-}
-
 const createTabPanel: TabPanelFactory = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'tab-panel',
-		getNode(this: TabPanel): DNode {
-			const theme = themeManager.getThemeClasses(css);
-			const tag = formatTagNameAndClasses(this.tagName, [ ...Object.keys(theme.tabPanel), ...this.classes ]);
-			return v(tag, this.getNodeAttributes(), this.getChildrenNodes());
-		},
+		classes: [ css.tabPanel ],
 		getChildrenNodes: function (this: TabPanel): DNode[] {
 			const { overrideClasses } = this.properties;
 			const theme = themeManager.getThemeClasses(css, overrideClasses);

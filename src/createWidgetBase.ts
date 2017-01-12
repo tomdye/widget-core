@@ -20,6 +20,7 @@ import Map from 'dojo-shim/Map';
 import { v, registry } from './d';
 import FactoryRegistry from './FactoryRegistry';
 import shallowPropertyComparisonMixin from './mixins/shallowPropertyComparisonMixin';
+import themeManager from './theme/themeManager';
 
 interface WidgetInternalState {
 	children: DNode[];
